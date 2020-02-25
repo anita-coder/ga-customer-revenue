@@ -45,7 +45,7 @@ head(test)
 #JSON columns are "device", "geoNetwork", "totals", "trafficSource", "customDimensions"
 
 #need this function for JSON to R data frame conversion as customeDiemensions JSON format is [{}]. Other JSON columns are {}
-unsnake <- . %>%
+complex_json <- . %>%
   str_replace_all(c("\\[\\]" = "[{}]", # empty element must contain dictionary
                     "^\\[|\\]$" = "", # remove initial and final brackets
                     "(\\[|\\{|, |: |', )'" = "\\1\"", # open single- to double-quote (on key or value)
@@ -64,7 +64,7 @@ te_geoNetwork <- paste("[", paste(test$geoNetwork, collapse = ","), "]") %>% fro
 te_totals <- paste("[", paste(test$totals, collapse = ","), "]") %>% fromJSON(flatten = T)
 te_trafficSource <- paste("[", paste(test$trafficSource, collapse = ","), "]") %>% fromJSON(flatten = T)
 
-te_customDimensions <- paste("[", paste(unsnake(test$customDimensions), collapse = ","), "]") %>% fromJSON(flatten = T)
+te_customDimensions <- paste("[", paste(complex_json(test$customDimensions), collapse = ","), "]") %>% fromJSON(flatten = T)
 
 #list each JSON attribute sub-columns
 names(tr_device)
