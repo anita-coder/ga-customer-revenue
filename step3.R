@@ -978,19 +978,16 @@ fitControl <- trainControl(## createTimeSlice
 )
                    
 set.seed(123)
-grid <- expand.grid(depth = c(5,6,7),
-                    learning_rate = c(0.2,0.1,0.05),
-                    iterations = c(50,100,200),
-                    l2_leaf_reg = 3,
-                    rsm = c(0.8,1.0),
-                    border_count = c(64,128,255)) 
+grid <- expand.grid(depth = 7,
+                    learning_rate = 0.2,
+                    iterations = 100,
+                    border_count = 128) 
                    
 model <- train(x = x_train[, !(colnames(x_train) %in% c("date", "fullVisitorId"))], 
                y = y_train,
                  method = catboost.caret, 
                  trControl = fitControl,
                   tuneGrid = grid,
-                   tuneLength = 3,
                   task_type = "CPU",
                   thread_count = 4
                 
